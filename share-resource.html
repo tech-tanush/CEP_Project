@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Share Resource | EduBridge</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .share-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 2rem;
+    }
+    
+    .share-form {
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: var(--shadow);
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--text-color);
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.8rem;
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: var(--transition);
+      background: var(--card-bg);
+      color: var(--text-color);
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    .form-group textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+    
+    .tags-input {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      padding: 0.5rem;
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
+      min-height: 50px;
+    }
+    
+    .tag {
+      background: var(--primary-color);
+      color: white;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .tag-remove {
+      cursor: pointer;
+      font-weight: bold;
+    }
+    
+    .tag-input {
+      border: none;
+      outline: none;
+      flex: 1;
+      min-width: 100px;
+      background: transparent;
+      color: var(--text-color);
+    }
+    
+    .btn-submit {
+      background: var(--primary-color);
+      color: white;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: var(--transition);
+      width: 100%;
+    }
+    
+    .btn-submit:hover {
+      background: var(--secondary-color);
+      transform: translateY(-2px);
+    }
+    
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo-container">
+        <div class="logo">
+          <img src="https://media.istockphoto.com/id/1355944902/vector/letter-e-sign-design-template-modern-colorful-vector-emblem.jpg?s=612x612&w=0&k=20&c=3K1uqqLfUDmeTVSPkZw078_j7TSk5AZ7uF0Ko_PiDtk="
+          alt="Logo"
+          width="40"
+          height="40"
+          style="border-radius: 50%; object-fit: cover; border: 2px solid white;"
+          />
+        </div>
+        <h1>EduBridge</h1>
+      </div>
+      <button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMobileMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav id="main-nav">
+        <a href="index.html">Home</a>
+        <a href="resources.html">Resources</a>
+        <a href="student.html">Student</a>
+        <a href="tutor.html">Tutor</a>
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌓</button>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+      </nav>
+    </div>
+    <div class="menu-backdrop" onclick="toggleMobileMenu()"></div>
+  </header>
+
+  <main class="share-container">
+    <h2 style="text-align: center; margin-bottom: 2rem; color: var(--text-color);">Share a Resource</h2>
+    
+    <form class="share-form" id="share-resource-form" onsubmit="shareResource(event)">
+      <div class="form-group">
+        <label for="title">Title *</label>
+        <input type="text" id="title" name="title" required data-i18n-placeholder="resourceTitle">
+      </div>
+      
+      <div class="form-group">
+        <label for="description">Description *</label>
+        <textarea id="description" name="description" required data-i18n-placeholder="resourceDescription"></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label for="category">Category *</label>
+        <select id="category" name="category" required>
+          <option value="">Select a category</option>
+          <option value="math">Mathematics</option>
+          <option value="science">Science</option>
+          <option value="languages">Languages</option>
+          <option value="programming">Programming</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="url">Resource URL</label>
+        <input type="url" id="url" name="url" placeholder="https://example.com/resource">
+      </div>
+      
+      <div class="form-group">
+        <label for="type">Resource Type</label>
+        <select id="type" name="type">
+          <option value="link">Link</option>
+          <option value="document">Document</option>
+          <option value="video">Video</option>
+          <option value="image">Image</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label>Tags (Press Enter to add)</label>
+        <div class="tags-input" id="tags-container">
+          <input type="text" class="tag-input" id="tag-input" placeholder="Add tags...">
+        </div>
+        <div id="tags-list" style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;"></div>
+      </div>
+      
+      <button type="submit" class="btn-submit" id="submit-btn">
+        Share Resource
+      </button>
+    </form>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2025 EduBridge | Powered by SDGs 4, 10 & 17</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script src="i18n.js"></script>
+  <script>
+    const tags = [];
+    
+    document.getElementById('tag-input').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const tag = this.value.trim();
+        if (tag && !tags.includes(tag)) {
+          tags.push(tag);
+          updateTagsDisplay();
+          this.value = '';
+        }
+      }
+    });
+    
+    function updateTagsDisplay() {
+      const container = document.getElementById('tags-list');
+      container.innerHTML = tags.map((tag, index) => `
+        <span class="tag">
+          ${tag}
+          <span class="tag-remove" onclick="removeTag(${index})">×</span>
+        </span>
+      `).join('');
+    }
+    
+    function removeTag(index) {
+      tags.splice(index, 1);
+      updateTagsDisplay();
+    }
+    
+    async function shareResource(event) {
+      event.preventDefault();
+      const form = event.target;
+      const submitBtn = document.getElementById('submit-btn');
+      const token = localStorage.getItem('authToken');
+      
+      if (!token) {
+        showNotification('Please login to share resources', 'error');
+        window.location.href = 'index.html';
+        return;
+      }
+      
+      const formData = {
+        title: document.getElementById('title').value,
+        description: document.getElementById('description').value,
+        category: document.getElementById('category').value,
+        url: document.getElementById('url').value,
+        type: document.getElementById('type').value,
+        tags: tags
+      };
+      
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sharing...';
+      
+      try {
+        const res = await fetch('http://localhost:3000/resources/share', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(formData)
+        });
+        
+        const data = await res.json();
+        
+        if (res.ok && data.success) {
+          showNotification('Resource shared successfully!', 'success');
+          setTimeout(() => {
+            window.location.href = 'resources.html';
+          }, 1500);
+        } else {
+          showNotification(data.message || 'Failed to share resource', 'error');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Share Resource';
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        showNotification('Error sharing resource. Please try again.', 'error');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Share Resource';
+      }
+    }
+  </script>
+</body>
+</html>
+

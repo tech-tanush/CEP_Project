@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard | EduBridge</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .dashboard {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    .dashboard h2 {
+      color: #333;
+      margin-bottom: 2rem;
+      font-size: 2.5rem;
+      text-align: center;
+    }
+    
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    
+    .card {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .card h3 {
+      color: #667eea;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .sessions-list {
+      list-style: none;
+      padding: 0;
+    }
+    
+    .session-item {
+      background: #f8f9fa;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 10px;
+      border-left: 4px solid #667eea;
+    }
+    
+    .session-item h4 {
+      margin: 0 0 0.5rem 0;
+      color: #333;
+    }
+    
+    .session-item p {
+      margin: 0;
+      color: #666;
+      font-size: 0.9rem;
+    }
+    
+    .progress-container {
+      margin: 1rem 0;
+    }
+    
+    .progress-bar {
+      width: 100%;
+      height: 20px;
+      background: #e0e0e0;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 10px;
+      transition: width 0.3s ease;
+    }
+    
+    .progress-text {
+      text-align: center;
+      margin-top: 0.5rem;
+      font-weight: 600;
+      color: #667eea;
+    }
+    
+    .btn {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 1rem;
+    }
+    
+    .btn:hover {
+      background: #5a6fd8;
+      transform: translateY(-2px);
+    }
+    
+    .btn-secondary {
+      background: #28a745;
+    }
+    
+    .btn-secondary:hover {
+      background: #218838;
+    }
+    
+    .stats-row {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .stat-item {
+      flex: 1;
+      text-align: center;
+      padding: 1rem;
+      background: #f8f9fa;
+      border-radius: 10px;
+    }
+    
+    .stat-number {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #667eea;
+    }
+    
+    .stat-label {
+      color: #666;
+      font-size: 0.9rem;
+    }
+    
+    .achievements {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+    
+    .achievement {
+      background: #fff3cd;
+      color: #856404;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .user-info {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      border-radius: 15px;
+      margin-bottom: 2rem;
+    }
+    
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo-container">
+        <div class="logo">
+          <img src="https://media.istockphoto.com/id/1355944902/vector/letter-e-sign-design-template-modern-colorful-vector-emblem.jpg?s=612x612&w=0&k=20&c=3K1uqqLfUDmeTVSPkZw078_j7TSk5AZ7uF0Ko_PiDtk="
+          alt="Logo"
+          width="40"
+          height="40"
+          style="border-radius: 50%; object-fit: cover; border: 2px solid white;"
+          />
+        </div>
+        <h1>EduBridge</h1>
+      </div>
+      <button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMobileMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav id="main-nav">
+        <a href="index.html">Home</a>
+        <a href="resources.html">Resources</a>
+        <a href="student.html">Student</a>
+        <a href="tutor.html">Tutor</a>
+        <a href="progress.html">Progress</a>
+        <select id="language-selector" onchange="setLanguage(this.value)" title="Select Language">
+          <option value="en">🇺🇸 English</option>
+          <option value="hi">🇮🇳 हिन्दी (Hindi)</option>
+          <option value="mr">🇮🇳 मराठी (Marathi)</option>
+        </select>
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌓</button>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+      </nav>
+    </div>
+    <div class="menu-backdrop" onclick="toggleMobileMenu()"></div>
+  </header>
+
+  <main class="dashboard">
+    <div class="user-info">
+      <h2>Welcome, Student! 👩‍🎓</h2>
+      <p>Ready to learn something new today?</p>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="card">
+        <h3>📅 Upcoming Sessions</h3>
+        <ul class="sessions-list" id="student-sessions">
+          <li class="session-item">
+            <h4>Mathematics - Calculus</h4>
+            <p><strong>Tutor:</strong> Dr. Sarah Johnson</p>
+            <p><strong>Time:</strong> Today, 3:00 PM - 4:00 PM</p>
+            <p><strong>Topic:</strong> Integration by Parts</p>
+          </li>
+          <li class="session-item">
+            <h4>Physics - Mechanics</h4>
+            <p><strong>Tutor:</strong> Prof. Michael Chen</p>
+            <p><strong>Time:</strong> Tomorrow, 2:00 PM - 3:00 PM</p>
+            <p><strong>Topic:</strong> Newton's Laws of Motion</p>
+          </li>
+          <li class="session-item">
+            <h4>English Literature</h4>
+            <p><strong>Tutor:</strong> Ms. Emily Davis</p>
+            <p><strong>Time:</strong> Friday, 10:00 AM - 11:00 AM</p>
+            <p><strong>Topic:</strong> Shakespeare Analysis</p>
+          </li>
+        </ul>
+        <button class="btn btn-secondary" onclick="bookSession()">Book New Session</button>
+      </div>
+
+      <div class="card">
+        <h3>📊 Your Progress</h3>
+        <div class="progress-container">
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: 65%"></div>
+          </div>
+          <div class="progress-text">65% Completed</div>
+        </div>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-number">12</div>
+            <div class="stat-label">Completed</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">8</div>
+            <div class="stat-label">In Progress</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">5</div>
+            <div class="stat-label">Upcoming</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>🎯 Current Goals</h3>
+        <ul style="padding-left: 1.5rem;">
+          <li>Complete Calculus Module 3 by end of week</li>
+          <li>Improve English essay writing skills</li>
+          <li>Master Physics problem-solving techniques</li>
+          <li>Prepare for upcoming Chemistry test</li>
+        </ul>
+        <button class="btn" onclick="setNewGoal()">Set New Goal</button>
+      </div>
+
+      <div class="card">
+        <h3>🏆 Achievements</h3>
+        <div class="achievements">
+          <div class="achievement">
+            🌟 First Session Complete
+          </div>
+          <div class="achievement">
+            📚 10 Hours Studied
+          </div>
+          <div class="achievement">
+            🎓 Math Beginner
+          </div>
+          <div class="achievement">
+            ⚡ Quick Learner
+          </div>
+        </div>
+        <p style="margin-top: 1rem; color: #666;">Keep learning to unlock more achievements!</p>
+      </div>
+
+      <div class="card">
+        <h3>📝 Recent Activity</h3>
+        <ul style="list-style: none; padding: 0;">
+          <li style="padding: 0.5rem 0; border-bottom: 1px solid #eee;">
+            <strong>Completed:</strong> Algebra Review Session
+            <small style="color: #666; display: block;">2 hours ago</small>
+          </li>
+          <li style="padding: 0.5rem 0; border-bottom: 1px solid #eee;">
+            <strong>Attended:</strong> Chemistry Lab Discussion
+            <small style="color: #666; display: block;">Yesterday</small>
+          </li>
+          <li style="padding: 0.5rem 0; border-bottom: 1px solid #eee;">
+            <strong>Submitted:</strong> English Essay Draft
+            <small style="color: #666; display: block;">2 days ago</small>
+          </li>
+          <li style="padding: 0.5rem 0;">
+            <strong>Joined:</strong> Study Group for Physics
+            <small style="color: #666; display: block;">3 days ago</small>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h3>🛠️ Quick Actions</h3>
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+          <button class="btn" onclick="findTutor()">Find a Tutor</button>
+          <button class="btn" onclick="joinStudyGroup()">Join Study Group</button>
+          <a href="resources.html" class="btn" style="text-align: center;">Access Resources</a>
+          <a href="share-resource.html" class="btn" style="text-align: center;">Share Resource</a>
+          <a href="progress.html" class="btn" style="text-align: center;">Track Progress</a>
+          <button class="btn" onclick="contactSupport()">Contact Support</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2025 EduBridge | Empowering Students Worldwide</p>
+    </div>
+  </footer>
+
+  <script src="i18n.js"></script>
+  <script src="app.js"></script>
+  <script>
+    // Student dashboard specific functions
+    function bookSession() {
+      alert('Booking system coming soon! You can contact tutors directly for now.');
+    }
+    
+    function setNewGoal() {
+      const goal = prompt('What\'s your new learning goal?');
+      if (goal) {
+        alert(`Great! "${goal}" has been added to your goals.`);
+      }
+    }
+    
+    function findTutor() {
+      alert('Tutor search feature coming soon! Check the tutor page to see available tutors.');
+    }
+    
+    function joinStudyGroup() {
+      alert('Study groups feature coming soon! Connect with other students.');
+    }
+    
+    function accessResources() {
+      window.location.href = 'resources.html';
+    }
+    
+    function contactSupport() {
+      alert('Support: support@edubridge.org\nPhone: +1-555-EDU-HELP');
+    }
+    
+    // Check if user is logged in
+    document.addEventListener('DOMContentLoaded', function() {
+      // In a real app, you'd check authentication here
+      console.log('Student dashboard loaded');
+    });
+  </script>
+</body>
+</html>
